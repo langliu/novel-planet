@@ -1,0 +1,21 @@
+name = "novel-planet-server"
+main = "./src/index.ts"
+compatibility_date = "2025-06-15"
+compatibility_flags = ["nodejs_compat"]
+
+[vars]
+# NODE_ENV = "production"
+# Add public environment variables here
+# Example: CORS_ORIGIN = "https://your-domain.com"
+
+# For sensitive data, use:
+# wrangler secret put SECRET_NAME
+# Don't add secrets to "vars" - they're visible in the dashboard!
+
+# D1 database config
+[[d1_databases]]
+binding = "DB"
+database_name = "novel-plant"
+database_id = "0e0ef61d-a486-47ea-8513-54f7ab1031cf"
+migrations_dir = "src/db/migrations"
+# preview_database_id = "local-test-db"

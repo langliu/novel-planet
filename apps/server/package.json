@@ -1,37 +1,38 @@
 {
-  "name": "server",
-  "main": "src/index.ts",
-  "type": "module",
-  "scripts": {
-    "build": "wrangler deploy --dry-run",
-    "check-types": "tsc -b",
-    "compile": "bun build --compile --minify --sourcemap --bytecode ./src/index.ts --outfile server",
-    "db:push": "drizzle-kit push",
-    "db:studio": "drizzle-kit studio",
-    "db:generate": "drizzle-kit generate",
-    "db:migrate": "drizzle-kit migrate",
-    "dev": "wrangler dev --port=3000",
-    "start": "wrangler dev",
-    "deploy": "wrangler deploy",
-    "cf-typegen": "wrangler types --env-interface CloudflareBindings"
-  },
   "dependencies": {
-    "dotenv": "^17.2.1",
-    "zod": "^4.0.2",
-    "@orpc/server": "^1.9.0",
+    "@libsql/client": "^0.15.9",
     "@orpc/client": "^1.9.0",
     "@orpc/openapi": "^1.9.0",
+    "@orpc/server": "^1.9.0",
     "@orpc/zod": "^1.9.0",
-    "hono": "^4.8.2",
+    "better-auth": "^1.3.13",
+    "dotenv": "^17.2.1",
     "drizzle-orm": "^0.44.2",
-    "@libsql/client": "^0.15.9",
-    "better-auth": "^1.3.13"
+    "hono": "^4.8.2",
+    "zod": "^4.0.2"
   },
   "devDependencies": {
+    "@types/node": "^24.5.2",
+    "drizzle-kit": "^0.31.2",
     "tsdown": "^0.15.1",
     "typescript": "^5.8.2",
-    "drizzle-kit": "^0.31.2",
-    "wrangler": "^4.23.0",
-    "@types/node": "^22.13.11"
-  }
+    "wrangler": "^4.40.2"
+  },
+  "main": "src/index.ts",
+  "name": "server",
+  "scripts": {
+    "build": "wrangler deploy --dry-run",
+    "cf-typegen": "wrangler types --env-interface CloudflareBindings",
+    "check-types": "tsc -b",
+    "compile": "bun build --compile --minify --sourcemap --bytecode ./src/index.ts --outfile server",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:migrate-local": "wrangler d1 migrations apply novel-plant --local",
+    "db:push": "drizzle-kit push",
+    "db:studio": "drizzle-kit studio",
+    "deploy": "wrangler deploy",
+    "dev": "wrangler dev --port=3000",
+    "start": "wrangler dev"
+  },
+  "type": "module"
 }

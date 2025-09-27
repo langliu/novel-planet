@@ -1,5 +1,22 @@
 {
   "$schema": "./node_modules/@biomejs/biome/configuration_schema.json",
+  "assist": {
+    "actions": {
+      "recommended": true,
+      "source": {
+        "organizeImports": "on",
+        "useSortedAttributes": "on",
+        "useSortedKeys": "on",
+        "useSortedProperties": "on"
+      }
+    }
+  },
+  "css": {
+    "assist": {
+      "enabled": true
+    }
+  },
+  "extends": ["ultracite"],
   "files": {
     "ignoreUnknown": false,
     "includes": [
@@ -19,10 +36,26 @@
       "!**/.alchemy",
       "!**/.svelte-kit",
       "!**/wrangler.jsonc",
-      "!**/.source"
+      "!**/.source",
+      "!**/worker-configuration.d.ts"
     ]
   },
-  "extends": [
-    "ultracite"
-  ]
+  "formatter": {
+    "indentWidth": 2
+  },
+  "javascript": {
+    "formatter": {
+      "quoteStyle": "single",
+      "semicolons": "asNeeded"
+    }
+  },
+  "json": {
+    "assist": {
+      "enabled": true
+    },
+    "formatter": {},
+    "linter": {
+      "enabled": true
+    }
+  }
 }
