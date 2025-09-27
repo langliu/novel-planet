@@ -263,6 +263,10 @@ export default function AdminNovelsPage() {
                             </Link>
                           </Button>
 
+                          <Button size="sm" variant="outline">
+                            <Link href={`/admin/novels/${novel.id}`}>详情</Link>
+                          </Button>
+
                           <Button asChild size="sm" variant="outline">
                             <Link href={`/admin/novels/${novel.id}/edit`}>
                               <Edit className="mr-1 h-4 w-4" />

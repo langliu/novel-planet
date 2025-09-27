@@ -1,5 +1,6 @@
 import type { RouterClient } from '@orpc/server'
-import { protectedProcedure, publicProcedure } from '../lib/orpc'
+import { protectedProcedure, publicProcedure } from '@/lib/orpc'
+import { chaptersRouter } from './chapters'
 import { novelsRouter } from './novels'
 
 export const appRouter = {
@@ -9,6 +10,7 @@ export const appRouter = {
     user: context.session?.user,
   })),
   ...novelsRouter,
+  ...chaptersRouter,
 }
 export type AppRouter = typeof appRouter
 export type AppRouterClient = RouterClient<typeof appRouter>

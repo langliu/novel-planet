@@ -1,19 +1,19 @@
 {
-	"compilerOptions": {
-		"target": "ESNext",
-		"module": "ESNext",
-		"moduleResolution": "bundler",
-		"verbatimModuleSyntax": true,
-		"strict": true,
-		"skipLibCheck": true,
-		"baseUrl": "./",
-		"paths": {
-			"@/*": ["./src/*"]
-		},
-		"outDir": "./dist",
-		"types": ["node"],
-		"composite": true,
-		"jsx": "react-jsx",
-		"jsxImportSource": "hono/jsx"
-	}
+  "compilerOptions": {
+    "baseUrl": "./",
+    "composite": true,
+    "jsx": "react-jsx",
+    "jsxImportSource": "hono/jsx",
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "outDir": "./dist",
+    "paths": {
+      "@/*": ["./src/*"]
+    },
+    "skipLibCheck": true,
+    "strict": true,
+    "target": "ESNext",
+    "types": ["node"],
+    "verbatimModuleSyntax": true
+  }
 }
