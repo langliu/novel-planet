@@ -12,9 +12,24 @@ import {
 } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { useState } from 'react'
+import { type ReactNode, useState } from 'react'
+import { AppSidebar } from '@/components/app-sidebar'
+import {
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbLink,
+  BreadcrumbList,
+  BreadcrumbPage,
+  BreadcrumbSeparator,
+} from '@/components/ui/breadcrumb'
 import { Button } from '@/components/ui/button'
+import { Separator } from '@/components/ui/separator'
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet'
+import {
+  SidebarInset,
+  SidebarProvider,
+  SidebarTrigger,
+} from '@/components/ui/sidebar'
 
 const navigation = [
   {
@@ -152,31 +167,35 @@ function MobileSidebar() {
   )
 }
 
-export default function AdminLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function AdminLayout({ children }: { children: ReactNode }) {
   return (
-    <div className="flex h-screen">
-      {/* 桌面端侧边栏 */}
-      <div className="hidden md:flex">
-        <Sidebar />
-      </div>
-
-      {/* 主内容区域 */}
-      <div className="flex flex-1 flex-col overflow-hidden">
-        {/* 移动端顶部栏 */}
-        <div className="flex h-16 items-center border-b px-4 md:hidden">
-          <MobileSidebar />
-          <div className="ml-4">
-            <h1 className="font-semibold text-lg">后台管理</h1>
+    <SidebarProvider>
+      <AppSidebar />
+      <SidebarInset>
+        <header className="flex h-16 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-data-[collapsible=icon]/sidebar-wrapper:h-12">
+          <div className="flex items-center gap-2 px-4">
+            <SidebarTrigger className="-ml-1" />
+            <Separator
+              className="mr-2 data-[orientation=vertical]:h-4"
+              orientation="vertical"
+            />
+            <Breadcrumb>
+              <BreadcrumbList>
+                <BreadcrumbItem className="hidden md:block">
+                  <BreadcrumbLink href="#">
+                    Building Your Application
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+                <BreadcrumbSeparator className="hidden md:block" />
+                <BreadcrumbItem>
+                  <BreadcrumbPage>Data Fetching</BreadcrumbPage>
+                </BreadcrumbItem>
+              </BreadcrumbList>
+            </Breadcrumb>
           </div>
-        </div>
-
-        {/* 页面内容 */}
-        <main className="flex-1 overflow-y-auto">{children}</main>
-      </div>
-    </div>
+        </header>
+        <div className="flex flex-1 flex-col gap-4 p-4 pt-0">{children}</div>
+      </SidebarInset>
+    </SidebarProvider>
   )
 }
