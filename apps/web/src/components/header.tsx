@@ -5,8 +5,11 @@ import UserMenu from './user-menu'
 
 export default function Header() {
   const links = [
-    { label: 'Home', to: '/' },
-    { label: 'Dashboard', to: '/dashboard' },
+    { label: '首页', to: '/' },
+    { label: '小说', to: '/novels' },
+    { label: '分类', to: '/categories' },
+    { label: '排行榜', to: '/rankings' },
+    { label: '我的', to: '/dashboard' },
   ] as const
 
   return (
