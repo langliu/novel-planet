@@ -4,7 +4,7 @@ import { z } from 'zod'
 import { db } from '@/db'
 import { bookmark, chapter, novel, readingHistory } from '@/db/schema'
 import { protectedProcedure, publicProcedure } from '@/lib/orpc'
-import { gzipString, ungzipBuffer } from '@/utils'
+import { getR2FileContent, gzipString } from '@/utils'
 
 const TITLE_MAX_LENGTH = 200
 
@@ -142,34 +142,7 @@ export const chaptersRouter = {
         throw new Error('章节内容不存在')
       }
 
-      // 解压 gzip 内容
-      const compressedBuffer = await contentFile.arrayBuffer()
-      const decompressedStream = new DecompressionStream('gzip')
-      const writer = decompressedStream.writable.getWriter()
-      writer.write(new Uint8Array(compressedBuffer))
-      writer.close()
-
-      const reader = decompressedStream.readable.getReader()
-      const chunks: Uint8Array[] = []
-
-      while (true) {
-        const { done, value } = await reader.read()
-        if (done) {
-          break
-        }
-        chunks.push(value)
-      }
-
-      // 合并所有块
-      const totalLength = chunks.reduce((acc, chunk) => acc + chunk.length, 0)
-      const result = new Uint8Array(totalLength)
-      let offset = 0
-      for (const chunk of chunks) {
-        result.set(chunk, offset)
-        offset += chunk.length
-      }
-
-      const decompressed = new TextDecoder().decode(result)
+      const decompressed = await getR2FileContent(contentFile)
 
       return {
         ...chapterData[0],

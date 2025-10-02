@@ -76,16 +76,15 @@ export default function AdminNovelsPage() {
   }
 
   const handleDelete = (novelId: string) => {
-    deleteMutation.mutate(novelId)
+    deleteMutation.mutate({ id: novelId })
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto">
       {/* 页面标题和操作 */}
-      <div className="mb-8 flex items-center justify-between">
+      <div className="mb-4 flex items-center justify-between">
         <div>
-          <h1 className="mb-2 font-bold text-3xl">小说管理</h1>
-          <p className="text-muted-foreground">管理所有小说作品</p>
+          <h1 className="mb-2 font-bold text-xl lg:text-2xl">小说管理</h1>
         </div>
         <Button asChild>
           <Link href="/admin/novels/create">
@@ -96,8 +95,8 @@ export default function AdminNovelsPage() {
       </div>
 
       {/* 搜索和筛选 */}
-      <Card className="mb-8">
-        <CardContent className="p-6">
+      <Card className="mb-2 p-4 lg:mb-4">
+        <CardContent className="p-0">
           <form className="space-y-4" onSubmit={handleSearch}>
             <div className="flex gap-4">
               <div className="relative flex-1">
@@ -256,13 +255,6 @@ export default function AdminNovelsPage() {
                         </div>
 
                         <div className="flex items-center gap-2">
-                          <Button asChild size="sm" variant="ghost">
-                            <Link href={`/novels/${novel.id}`}>
-                              <Eye className="mr-1 h-4 w-4" />
-                              预览
-                            </Link>
-                          </Button>
-
                           <Button size="sm" variant="outline">
                             <Link href={`/admin/novels/${novel.id}`}>详情</Link>
                           </Button>

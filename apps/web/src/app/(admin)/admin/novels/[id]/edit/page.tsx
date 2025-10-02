@@ -165,17 +165,15 @@ export default function EditNovelPage() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto">
       {/* 页面标题 */}
-      <div className="mb-6 flex items-center justify-between">
-        <div>
-          <h1 className="font-bold text-3xl">编辑小说</h1>
-          <p className="text-muted-foreground">修改小说信息和设置</p>
-        </div>
-        <Button onClick={() => router.back()} variant="outline">
-          <ArrowLeft className="mr-2 h-4 w-4" />
-          返回
+      <div className="mb-4 flex items-center">
+        <Button onClick={() => router.back()} variant="ghost">
+          <ArrowLeft className="size-6" />
         </Button>
+        <div>
+          <h1 className="font-bold text-xl lg:text-2xl">编辑小说</h1>
+        </div>
       </div>
 
       <Card>
@@ -236,11 +234,6 @@ export default function EditNovelPage() {
                 <Label htmlFor="category">分类</Label>
                 <Select
                   onValueChange={(value) => {
-                    console.log(
-                      'category value change',
-                      value,
-                      formData.categoryId
-                    )
                     if (value) {
                       setFormData((prev) => ({ ...prev, categoryId: value }))
                     }
@@ -303,7 +296,20 @@ export default function EditNovelPage() {
             {/* 标签 */}
             <div className="space-y-2">
               <Label htmlFor="tags">标签</Label>
-              <div className="mb-2 flex flex-wrap gap-2">
+
+              <div className="flex gap-2">
+                <Input
+                  id="tags"
+                  onChange={(e) => setNewTag(e.target.value)}
+                  onKeyDown={handleKeyPress}
+                  placeholder="输入标签后按回车添加"
+                  value={newTag}
+                />
+                <Button onClick={addTag} type="button" variant="outline">
+                  添加
+                </Button>
+              </div>
+              <div className="mt-2 flex flex-wrap gap-2">
                 {formData.tags.map((tag) => (
                   <div
                     className="inline-flex items-center rounded-full border border-transparent bg-secondary px-2.5 py-0.5 font-semibold text-secondary-foreground text-xs transition-colors hover:bg-secondary/80"
@@ -319,18 +325,6 @@ export default function EditNovelPage() {
                     </button>
                   </div>
                 ))}
-              </div>
-              <div className="flex gap-2">
-                <Input
-                  id="tags"
-                  onChange={(e) => setNewTag(e.target.value)}
-                  onKeyDown={handleKeyPress}
-                  placeholder="输入标签后按回车添加"
-                  value={newTag}
-                />
-                <Button onClick={addTag} type="button" variant="outline">
-                  添加
-                </Button>
               </div>
             </div>
 
