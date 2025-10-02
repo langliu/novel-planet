@@ -35,6 +35,16 @@ const data = {
       url: '/admin',
     },
     {
+      icon: BookOpen,
+      title: '小说',
+      url: '/admin/novels',
+    },
+    {
+      icon: SquareTerminal,
+      title: '分类',
+      url: '/admin/categories',
+    },
+    {
       icon: SquareTerminal,
       isActive: true,
       items: [

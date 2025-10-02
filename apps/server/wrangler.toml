@@ -19,3 +19,7 @@ database_name = "novel-plant"
 database_id = "0e0ef61d-a486-47ea-8513-54f7ab1031cf"
 migrations_dir = "src/db/migrations"
 # preview_database_id = "local-test-db"
+
+[[r2_buckets]]
+bucket_name = "novel-planet"
+binding = "R2"

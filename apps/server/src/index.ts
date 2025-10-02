@@ -9,6 +9,7 @@ import { cors } from 'hono/cors'
 import { logger } from 'hono/logger'
 import { auth } from './lib/auth'
 import { createContext } from './lib/context'
+import fileRoute from './routers/file'
 import { appRouter } from './routers/index'
 
 const app = new Hono()
@@ -26,7 +27,7 @@ app.use(
 
 app.on(['POST', 'GET'], '/api/auth/*', (c) => auth.handler(c.req.raw))
 
-export const apiHandler = new OpenAPIHandler(appRouter, {
+export const apiHandler = new OpenAPIHandler(appRouter as any, {
   interceptors: [
     onError((error) => {
       console.error(error)
@@ -39,7 +40,7 @@ export const apiHandler = new OpenAPIHandler(appRouter, {
   ],
 })
 
-export const rpcHandler = new RPCHandler(appRouter, {
+export const rpcHandler = new RPCHandler(appRouter as any, {
   interceptors: [
     onError((error) => {
       console.error(error)
@@ -72,5 +73,7 @@ app.use('/*', async (c, next) => {
 })
 
 app.get('/', (c) => c.text('OK'))
+
+app.route('/api', fileRoute)
 
 export default app

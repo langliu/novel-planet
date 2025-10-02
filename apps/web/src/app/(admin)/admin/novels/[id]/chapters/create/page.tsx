@@ -1,7 +1,7 @@
 'use client'
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { ArrowLeft, BookOpen, Save } from 'lucide-react'
+import { ArrowLeft, Save } from 'lucide-react'
 import Link from 'next/link'
 import { useParams, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
@@ -147,7 +147,7 @@ export default function CreateChapterPage() {
                   onChange={(e) =>
                     setFormData({
                       ...formData,
-                      chapterNumber: Number.parseInt(e.target.value) || 1,
+                      chapterNumber: Number.parseInt(e.target.value, 10) || 1,
                     })
                   }
                   type="number"

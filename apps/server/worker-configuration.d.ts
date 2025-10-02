@@ -13,6 +13,7 @@ declare namespace Cloudflare {
 		BETTER_AUTH_SECRET: string;
 		BETTER_AUTH_URL: string;
 		DB: D1Database;
+    R2: R2Bucket;
 	}
 }
 interface CloudflareBindings extends Cloudflare.Env {}
