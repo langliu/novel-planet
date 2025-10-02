@@ -1,9 +1,10 @@
 'use client'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { BookOpen, Edit, Eye, Filter, Plus, Search, Trash2 } from 'lucide-react'
+import { BookOpen, Edit, Filter, Plus, Search, Trash2 } from 'lucide-react'
 import Link from 'next/link'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
+import { useBreadcrumb } from '@/app/(admin)/admin/breadcrumb-provider'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -17,13 +18,7 @@ import {
 } from '@/components/ui/alert-dialog'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card'
+import { Card, CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import {
   Select,
@@ -42,6 +37,15 @@ export default function AdminNovelsPage() {
     'latest'
   )
   const queryClient = useQueryClient()
+  const { setBreadcrumb } = useBreadcrumb()
+  useEffect(() => {
+    setBreadcrumb([
+      {
+        href: '/admin/novels',
+        label: '小说',
+      },
+    ])
+  }, [setBreadcrumb])
 
   const { data: categories } = useQuery(orpc.getCategories.queryOptions())
 
@@ -60,7 +64,7 @@ export default function AdminNovelsPage() {
   const deleteMutation = useMutation(
     orpc.deleteNovel.mutationOptions({
       onError: (error) => {
-        toast.error('删除失败：' + error.message)
+        toast.error(`删除失败：${error.message}`)
       },
       onSuccess: () => {
         toast.success('小说删除成功')

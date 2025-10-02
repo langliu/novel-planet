@@ -3,8 +3,8 @@
   "devDependencies": {
     "@biomejs/biome": "2.2.4",
     "husky": "^9.1.7",
-    "lint-staged": "^16.1.2",
-    "turbo": "^2.5.4",
+    "lint-staged": "^16.2.3",
+    "turbo": "^2.5.8",
     "ultracite": "5.4.4"
   },
   "lint-staged": {
@@ -13,7 +13,7 @@
     ]
   },
   "name": "novel-planet",
-  "packageManager": "bun@1.2.22",
+  "packageManager": "bun@1.2.23",
   "private": true,
   "scripts": {
     "build": "turbo build",

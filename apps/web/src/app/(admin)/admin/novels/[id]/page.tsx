@@ -11,8 +11,9 @@ import {
 } from 'lucide-react'
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
+import { useBreadcrumb } from '@/app/(admin)/admin/breadcrumb-provider'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -88,6 +89,7 @@ export default function NovelChaptersPage() {
   const [search, setSearch] = useState('')
   const [sortBy, setSortBy] = useState<'newest' | 'oldest'>('newest')
   const [isFree, setIsFree] = useState<string>('all')
+  const { setBreadcrumb } = useBreadcrumb()
 
   // 获取小说详情
   const { data: novelData, isLoading: novelLoading } = useQuery({
@@ -366,6 +368,19 @@ export default function NovelChaptersPage() {
       </>
     )
   }
+
+  useEffect(() => {
+    setBreadcrumb([
+      {
+        href: '/admin/novels',
+        label: '小说',
+      },
+      {
+        href: '',
+        label: novelData?.novel.title || '',
+      },
+    ])
+  }, [setBreadcrumb, novelData])
 
   return (
     <div className="container mx-auto px-4 py-8">
