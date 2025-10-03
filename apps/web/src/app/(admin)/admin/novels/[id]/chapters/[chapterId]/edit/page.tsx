@@ -6,6 +6,7 @@ import { useParams, useRouter } from 'next/navigation'
 import type React from 'react'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
+import { useBreadcrumb } from '@/app/(admin)/admin/breadcrumb-provider'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
@@ -28,6 +29,7 @@ export default function EditChapterPage() {
   const queryClient = useQueryClient()
   const novelId = params.id as string
   const chapterId = params.chapterId as string
+  const { setBreadcrumb } = useBreadcrumb()
 
   // 表单状态
   const [formData, setFormData] = useState<ChapterFormData>({
@@ -101,6 +103,22 @@ export default function EditChapterPage() {
 
   const isLoading = isLoadingChapter || isLoadingNovel
 
+  useEffect(() => {
+    setBreadcrumb([
+      {
+        href: '/admin/novels',
+        label: '小说',
+      },
+      {
+        href: `/admin/novels/${novelId}`,
+        label: novelData?.novel?.title || '加载中...',
+      },
+      {
+        label: '编辑章节',
+      },
+    ])
+  }, [setBreadcrumb, novelId, novelData])
+
   if (isLoading) {
     return (
       <div className="container mx-auto px-4 py-8">
@@ -133,24 +151,15 @@ export default function EditChapterPage() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto">
       {/* 页面标题 */}
-      <div className="mb-6 flex items-center justify-between">
-        <div>
-          <h1 className="font-bold text-3xl">编辑章节</h1>
-          <p className="text-muted-foreground">
-            {novelData?.novel?.title || '加载中...'}
-          </p>
-        </div>
-        <Button onClick={() => router.back()} variant="outline">
-          <ArrowLeft className="mr-2 h-4 w-4" />
-          返回
-        </Button>
+      <div className="mb-2 flex items-center justify-between lg:mb-4">
+        <h1 className="font-bold text-xl lg:text-2xl">编辑章节</h1>
       </div>
 
       {/* 表单卡片 */}
       <Card>
-        <CardContent className="p-6">
+        <CardContent>
           <form className="space-y-6" onSubmit={handleSubmit}>
             {/* 章节标题 */}
             <div className="space-y-2">

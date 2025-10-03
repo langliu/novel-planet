@@ -1,11 +1,11 @@
 'use client'
 
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { ArrowLeft, Save } from 'lucide-react'
-import Link from 'next/link'
+import { Save } from 'lucide-react'
 import { useParams, useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
+import { useBreadcrumb } from '@/app/(admin)/admin/breadcrumb-provider'
 import { Button } from '@/components/ui/button'
 import { Card, CardContent } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
@@ -27,6 +27,7 @@ export default function CreateChapterPage() {
   const router = useRouter()
   const queryClient = useQueryClient()
   const novelId = params.id as string
+  const { setBreadcrumb } = useBreadcrumb()
 
   // 表单状态
   const [formData, setFormData] = useState<ChapterFormData>({
@@ -101,29 +102,36 @@ export default function CreateChapterPage() {
   // 计算字数
   const wordCount = formData.content.trim().length
 
-  return (
-    <div className="container mx-auto px-4 py-8">
-      {/* 返回按钮和页面标题 */}
-      <div className="mb-6">
-        <Button asChild className="mb-4" variant="ghost">
-          <Link href={`/admin/novels/${novelId}`}>
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            返回章节列表
-          </Link>
-        </Button>
+  useEffect(() => {
+    setBreadcrumb([
+      {
+        href: '/admin/novels',
+        label: '小说',
+      },
+      {
+        href: `/admin/novels/${novelId}`,
+        label: novelData?.novel.title || '',
+      },
+      {
+        label: '添加章节',
+      },
+    ])
+  }, [novelData, novelId, setBreadcrumb])
 
+  return (
+    <div className="container mx-auto">
+      <div className="mb-2 lg:mb-4">
         <div>
-          <h1 className="mb-2 font-bold text-3xl">
-            {isLoading ? '加载中...' : `添加章节 - ${novelData?.novel.title}`}
+          <h1 className="mb-2 font-bold text-xl lg:text-2xl">
+            {isLoading ? '加载中...' : '添加章节'}
           </h1>
-          <p className="text-muted-foreground">创建新的小说章节</p>
         </div>
       </div>
 
       {/* 创建章节表单 */}
       <form onSubmit={handleSubmit}>
         <Card className="mb-6">
-          <CardContent className="p-6">
+          <CardContent>
             <div className="space-y-6">
               {/* 章节标题 */}
               <div className="space-y-2">
@@ -191,11 +199,7 @@ export default function CreateChapterPage() {
 
         {/* 提交按钮 */}
         <div className="flex justify-end gap-4">
-          <Button
-            onClick={() => router.push(`/admin/novels/${novelId}`)}
-            type="button"
-            variant="outline"
-          >
+          <Button onClick={() => router.back()} type="button" variant="outline">
             取消
           </Button>
           <Button

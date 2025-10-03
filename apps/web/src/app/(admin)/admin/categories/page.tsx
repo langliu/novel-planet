@@ -1,8 +1,9 @@
 'use client'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { BookOpen, Edit, FolderOpen, Plus, Trash2 } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { toast } from 'sonner'
+import { useBreadcrumb } from '@/app/(admin)/admin/breadcrumb-provider'
 import {
   AlertDialog,
   AlertDialogAction,
@@ -37,12 +38,12 @@ import { Label } from '@/components/ui/label'
 import { Textarea } from '@/components/ui/textarea'
 import { orpc } from '@/utils/orpc'
 
-interface CategoryFormData {
+type CategoryFormData = {
   name: string
   description: string
 }
 
-interface Category {
+type Category = {
   id: string
   name: string
   description: string | null
@@ -96,6 +97,7 @@ export default function AdminCategoriesPage() {
     name: '',
   })
   const queryClient = useQueryClient()
+  const { setBreadcrumb } = useBreadcrumb()
 
   const {
     data: categories,
@@ -121,7 +123,7 @@ export default function AdminCategoriesPage() {
   const updateMutation = useMutation({
     ...orpc.updateCategory.mutationOptions(),
     onError: (error) => {
-      toast.error('更新失败：' + error.message)
+      toast.error(`更新失败：${error.message}`)
     },
     onSuccess: () => {
       toast.success('分类更新成功')
@@ -136,7 +138,7 @@ export default function AdminCategoriesPage() {
   const deleteMutation = useMutation({
     ...orpc.deleteCategory.mutationOptions(),
     onError: (error) => {
-      toast.error('删除失败：' + error.message)
+      toast.error(`删除失败：${error.message}`)
     },
     onSuccess: () => {
       toast.success('分类删除成功')
@@ -184,14 +186,20 @@ export default function AdminCategoriesPage() {
     setEditingCategory(null)
   }
 
+  useEffect(() => {
+    setBreadcrumb([
+      {
+        href: '/admin/categories',
+        label: '分类管理',
+      },
+    ])
+  }, [setBreadcrumb])
+
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto">
       {/* 页面标题和操作 */}
-      <div className="mb-8 flex items-center justify-between">
-        <div>
-          <h1 className="mb-2 font-bold text-3xl">分类管理</h1>
-          <p className="text-muted-foreground">管理小说分类</p>
-        </div>
+      <div className="mb-2 flex items-center justify-between lg:mb-4">
+        <h1 className="mb-2 font-bold text-xl lg:text-2xl">分类管理</h1>
 
         <Dialog onOpenChange={setIsCreateDialogOpen} open={isCreateDialogOpen}>
           <DialogTrigger asChild>

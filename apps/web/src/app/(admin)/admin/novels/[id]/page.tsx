@@ -1,14 +1,6 @@
 'use client'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import {
-  ArrowLeft,
-  BookOpen,
-  Calendar,
-  Edit,
-  Filter,
-  Search,
-  Trash2,
-} from 'lucide-react'
+import { BookOpen, Calendar, Edit, Filter, Search, Trash2 } from 'lucide-react'
 import Link from 'next/link'
 import { useParams } from 'next/navigation'
 import { useEffect, useState } from 'react'
@@ -54,28 +46,6 @@ import {
   TableRow,
 } from '@/components/ui/table'
 import { orpc } from '@/utils/orpc'
-
-// 定义章节类型
-type Chapter = {
-  id: string
-  title: string
-  chapterNumber: number
-  wordCount: number | null
-  isFree: boolean
-  publishedAt: string
-}
-
-// 定义小说类型
-type Novel = {
-  id: string
-  title: string
-}
-
-// 定义API返回数据类型
-type NovelDetailData = {
-  novel: Novel
-  chapters: Chapter[]
-}
 
 // 定义分页常量
 const ITEMS_PER_PAGE = 10
@@ -174,18 +144,21 @@ export default function NovelChaptersPage() {
   const renderChapterList = () => {
     if (isLoading) {
       return (
-        <Card>
-          <CardContent className="p-6">
+        <Card className={'p-4'}>
+          <CardContent className="p-4">
             <div className="animate-pulse space-y-4">
-              {Array.from({ length: 5 }).map((_, i) => (
-                <div className="flex items-center gap-4" key={`skeleton-${i}`}>
-                  <div className="h-4 w-1/12 rounded bg-muted" />
-                  <div className="h-4 w-1/3 rounded bg-muted" />
-                  <div className="h-4 w-1/6 rounded bg-muted" />
-                  <div className="h-4 w-1/6 rounded bg-muted" />
-                  <div className="h-4 w-1/6 rounded bg-muted" />
-                </div>
-              ))}
+              {Array.from({ length: 5 }).map((_, i) => {
+                const itemId = `skeleton-${i}`
+                return (
+                  <div className="flex items-center gap-4" key={itemId}>
+                    <div className="h-4 w-1/12 rounded bg-muted" />
+                    <div className="h-4 w-1/3 rounded bg-muted" />
+                    <div className="h-4 w-1/6 rounded bg-muted" />
+                    <div className="h-4 w-1/6 rounded bg-muted" />
+                    <div className="h-4 w-1/6 rounded bg-muted" />
+                  </div>
+                )
+              })}
             </div>
           </CardContent>
         </Card>
@@ -217,7 +190,7 @@ export default function NovelChaptersPage() {
     return (
       <>
         <Card>
-          <CardContent className="p-0">
+          <CardContent>
             <Table>
               <TableHeader>
                 <TableRow>
@@ -333,6 +306,7 @@ export default function NovelChaptersPage() {
                 }
 
                 // 显示省略号
+                // biome-ignore lint/style/noMagicNumbers: 暂时忽略
                 if (pageNumber === 2 && page > 3) {
                   return (
                     <PaginationItem key="ellipsis-start">
@@ -383,22 +357,14 @@ export default function NovelChaptersPage() {
   }, [setBreadcrumb, novelData])
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto">
       {/* 返回按钮和页面标题 */}
-      <div className="mb-6">
-        <Button asChild className="mb-4" variant="ghost">
-          <Link href="/admin/novels">
-            <ArrowLeft className="mr-2 h-4 w-4" />
-            返回小说列表
-          </Link>
-        </Button>
-
+      <div className="mb-4">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="mb-2 font-bold text-3xl">
+            <h1 className="mb-2 font-bold text-xl lg:text-2xl">
               {isLoading ? '加载中...' : novelData?.novel.title}
             </h1>
-            <p className="text-muted-foreground">管理小说章节</p>
           </div>
 
           <Button asChild>
@@ -411,8 +377,8 @@ export default function NovelChaptersPage() {
       </div>
 
       {/* 搜索和筛选 */}
-      <Card className="mb-8">
-        <CardContent className="p-6">
+      <Card className="mb-4">
+        <CardContent className="px-4">
           <form className="space-y-4" onSubmit={handleSearch}>
             <div className="flex gap-4">
               <div className="relative flex-1">
