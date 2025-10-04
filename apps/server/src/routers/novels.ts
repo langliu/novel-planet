@@ -26,6 +26,7 @@ const createNovelSchema = z.object({
   categoryId: z.string().optional(),
   coverImage: z.string().optional(),
   description: z.string().optional(),
+  status: z.enum(['ongoing', 'completed', 'paused']).default('ongoing'),
   tags: z.array(z.string()).optional(),
   title: z.string().min(1).max(200),
 })
