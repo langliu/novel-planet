@@ -166,7 +166,13 @@ export const novelsRouter = {
   ),
   // 获取小说详情
   getNovelDetail: publicProcedure
-    .input(z.object({ id: z.string() }))
+    .input(
+      z.object({
+        id: z.string(),
+        page: z.int().default(1),
+        pageSize: z.int().default(10),
+      })
+    )
     .handler(async ({ input }) => {
       const novelDetail = await db
         .select()
@@ -184,13 +190,16 @@ export const novelsRouter = {
           chapterNumber: chapter.chapterNumber,
           id: chapter.id,
           isFree: chapter.isFree,
+          novelId: chapter.novelId,
           publishedAt: chapter.publishedAt,
           title: chapter.title,
           wordCount: chapter.wordCount,
         })
         .from(chapter)
         .where(eq(chapter.novelId, input.id))
-        .orderBy(asc(chapter.chapterNumber))
+        .orderBy(desc(chapter.chapterNumber))
+        .offset(input.pageSize * (input.page - 1))
+        .limit(input.pageSize)
 
       return {
         chapters,

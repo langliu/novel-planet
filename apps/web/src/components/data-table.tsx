@@ -166,7 +166,7 @@ export function DataTable<Data, Value>({
               </div>
             )}
 
-            <div className="flex w-[100px] items-center justify-center font-medium text-sm">
+            <div className="flex items-center justify-center font-medium text-sm">
               第 {pagination.currentPage} 页，共 {pagination.totalPages} 页
             </div>
 
