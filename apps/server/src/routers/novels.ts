@@ -6,10 +6,8 @@ import {
   bookmark,
   category,
   chapter,
-  comment,
   favorite,
   novel,
-  rating,
   readingHistory,
 } from '../db/schema'
 import { protectedProcedure, publicProcedure } from '../lib/orpc'

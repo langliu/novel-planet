@@ -1,10 +1,10 @@
 import { env } from 'cloudflare:workers'
 import { eq, sql } from 'drizzle-orm'
 import { z } from 'zod'
-import { db } from '@/db'
-import { bookmark, chapter, novel, readingHistory } from '@/db/schema'
-import { protectedProcedure, publicProcedure } from '@/lib/orpc'
-import { getR2FileContent, gzipString } from '@/utils'
+import { db } from '../db'
+import { bookmark, chapter, novel, readingHistory } from '../db/schema'
+import { protectedProcedure, publicProcedure } from '../lib/orpc'
+import { getR2FileContent, gzipString } from '../utils'
 
 const TITLE_MAX_LENGTH = 200
 
@@ -104,8 +104,11 @@ export const chaptersRouter = {
         throw new Error('章节不存在')
       }
       const bucket = env.R2
-      const content = await bucket.get(`${chapterData[0].id}.txt.gz`)
-
+      const content = await bucket.get(chapterData[0].content)
+      if (!content) {
+        throw new Error('章节内容不存在')
+      }
+      const decompressed = await getR2FileContent(content)
       // 增加章节阅读量
       await db
         .update(chapter)
@@ -118,7 +121,7 @@ export const chaptersRouter = {
         .set({ viewCount: sql`${novel.viewCount} + 1` })
         .where(eq(novel.id, chapterData[0].novelId))
 
-      return { ...chapterData[0], content }
+      return { ...chapterData[0], content: decompressed }
     }),
 
   // 获取章节详情（用于编辑）

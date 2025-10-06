@@ -3,7 +3,7 @@ import { RPCLink } from '@orpc/client/fetch'
 import { createTanstackQueryUtils } from '@orpc/tanstack-query'
 import { QueryCache, QueryClient } from '@tanstack/react-query'
 import { toast } from 'sonner'
-import type { AppRouterClient } from '../../../server/src/routers/index'
+import type { AppRouterClient } from '../../../server/src/routers'
 
 export const queryClient = new QueryClient({
   queryCache: new QueryCache({
@@ -11,8 +11,8 @@ export const queryClient = new QueryClient({
       toast.error(`Error: ${error.message}`, {
         action: {
           label: 'retry',
-          onClick: () => {
-            queryClient.invalidateQueries()
+          onClick: async () => {
+            await queryClient.invalidateQueries()
           },
         },
       })

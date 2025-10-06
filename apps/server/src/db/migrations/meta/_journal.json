@@ -15,6 +15,13 @@
       "when": 1758946603574,
       "tag": "0001_normal_maginty",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1759588466269,
+      "tag": "0002_sharp_cannonball",
+      "breakpoints": true
     }
   ]
 }

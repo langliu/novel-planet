@@ -9,8 +9,8 @@ import { cors } from 'hono/cors'
 import { logger } from 'hono/logger'
 import { auth } from './lib/auth'
 import { createContext } from './lib/context'
+import { appRouter } from './routers'
 import fileRoute from './routers/file'
-import { appRouter } from './routers/index'
 
 const app = new Hono()
 

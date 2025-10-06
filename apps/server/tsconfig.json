@@ -1,15 +1,12 @@
 {
   "compilerOptions": {
-    "baseUrl": "./",
+    "baseUrl": ".",
     "composite": true,
     "jsx": "react-jsx",
     "jsxImportSource": "hono/jsx",
     "module": "ESNext",
     "moduleResolution": "bundler",
     "outDir": "./dist",
-    "paths": {
-      "@/*": ["./src/*"]
-    },
     "skipLibCheck": true,
     "strict": true,
     "target": "ESNext",
