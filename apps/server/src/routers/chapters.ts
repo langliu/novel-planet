@@ -25,7 +25,7 @@ export const chaptersRouter = {
       const chapterId = crypto.randomUUID()
       const now = new Date()
       const wordCount = input.content.length
-      const fileName = `${crypto.randomUUID()}.txt.gz`
+      const fileName = `${input.novelId}/${chapterId}.txt.gz`
       const bucket = env.R2
       const compressedData = await gzipString(input.content)
       try {
@@ -55,9 +55,9 @@ export const chaptersRouter = {
       await db
         .update(novel)
         .set({
-          chapterCount: sql`${novel.chapterCount} + 1`,
+          chapterCount: sql<number>`novel.chapterCount + ${1}`,
           updatedAt: now,
-          wordCount: sql`${novel.wordCount} + ${wordCount}`,
+          wordCount: sql<number>`novel.wordCount + ${wordCount}`,
         })
         .where(eq(novel.id, input.novelId))
 
@@ -112,13 +112,13 @@ export const chaptersRouter = {
       // 增加章节阅读量
       await db
         .update(chapter)
-        .set({ viewCount: sql`${chapter.viewCount} + 1` })
+        .set({ viewCount: sql<number>`chapter.viewCount + ${1}` })
         .where(eq(chapter.id, input.id))
 
       // 增加小说阅读量
       await db
         .update(novel)
-        .set({ viewCount: sql`${novel.viewCount} + 1` })
+        .set({ viewCount: sql<number>`novel.viewCount + ${1}` })
         .where(eq(novel.id, chapterData[0].novelId))
 
       return { ...chapterData[0], content: decompressed }
@@ -190,7 +190,16 @@ export const chaptersRouter = {
         throw new Error(`保存失败：${(e as Error).message}`)
       }
 
-      const updateData: any = {
+      const updateSchema = createChapterSchema
+        .extend({
+          content: z.string().optional(),
+          isFree: z.boolean().optional(),
+          updatedAt: z.date(),
+          wordCount: z.int(),
+        })
+        .omit({ novelId: true })
+
+      const updateData: z.infer<typeof updateSchema> = {
         chapterNumber: input.chapterNumber,
         title: input.title,
         updatedAt: new Date(),
@@ -212,7 +221,7 @@ export const chaptersRouter = {
           .update(novel)
           .set({
             updatedAt: new Date(),
-            wordCount: sql`${novel.wordCount} + ${wordCountDiff}`,
+            wordCount: sql<number>`novel.wordCount + ${wordCountDiff}`,
           })
           .where(eq(novel.id, chapterData[0].novelId))
       }
